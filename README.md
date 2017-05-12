@@ -1,6 +1,6 @@
 # fetch-vcr
 
-Stop mocking tests and just record and then play them back. See [vcr/vcr](https://github.com/vcr/vcr) for the main idea.
+Stop mocking HTTP Requests and just record and then play them back. See [vcr/vcr](https://github.com/vcr/vcr) for the main idea.
 
 # Usage
 
