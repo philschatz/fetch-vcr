@@ -1,0 +1,33 @@
+{
+  "scripts": {
+    "test": "ava"
+  },
+  "dependencies": {
+    "node-fetch": "^1.6.3"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "standard": "^10.0.2"
+  },
+  "name": "fetch-vcr",
+  "description": "Stop mocking tests and just record and then play them back",
+  "version": "0.1.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philschatz/fetch-vcr.git"
+  },
+  "keywords": [
+    "fetch",
+    "vcr"
+  ],
+  "author": "Philip Schatz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/philschatz/fetch-vcr/issues"
+  },
+  "homepage": "https://github.com/philschatz/fetch-vcr#readme"
+}
