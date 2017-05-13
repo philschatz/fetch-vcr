@@ -4,6 +4,7 @@ const crypto = require('crypto')
 const fetchImpl = require('node-fetch')
 const Response = require('node-fetch/lib/response')
 const VCR_MODE = process.env['VCR_MODE'] || 'playback'
+const DEBUG = process.env['DEBUG'] || false
 
 // Valid modes:
 // - 'playback': ONLY uses the fixture files (default)
@@ -18,6 +19,12 @@ const CONFIGURATION = {
   mode: VCR_MODE,
   fixturePath: path.join(process.cwd(), '_fixtures'),
   headerBlacklist: ['authorization'] // These need to be lowercase
+}
+
+function debug(url, message) {
+  if (DEBUG) {
+    console.log(url, message)
+  }
 }
 
 buildHash = function(url, args) {
@@ -68,7 +75,7 @@ function loadFixture(url, args) {
       if (err) {
         return reject(err)
       }
-      const opts = JSON.parse(optionsRaw)
+      const opts = JSON.parse(optionsRaw.toString())
 
       // Read the Response contens
       fs.readFile(contentsFilename, function(err, contentsBuffer) {
@@ -87,12 +94,16 @@ function saveFixture(url, args, response) {
   const optionsFilename = path.join(CONFIGURATION.fixturePath, buildOptionsFilename(url, args, hash))
 
   // Convert the response body to a Buffer for saving
-  return response.clone().buffer()
+  debug(url, 'getting buffer to save');
+  // DO NOT .clone() this response because response.clone() does not work well. See https://github.com/bitinn/node-fetch/issues/151
+  return response.buffer()
   .then(function(contentsBuffer) {
     // Write the Response contents
     const contentsPromise = new Promise(function(resolve, reject) {
+      debug(url, 'writing body to file');
       fs.writeFile(contentsFilename, contentsBuffer, function(err) {
         if (err) {
+          debug(url, 'problem writing body to file', err);
           return reject(new Error('fetch-vcr ERROR while attempting to save fixture file to ' + contentsFilename + '. Maybe the directory does not exist?'))
         }
         resolve(true)
@@ -111,20 +122,26 @@ function saveFixture(url, args, response) {
     const optionsPromise = new Promise(function(resolve, reject) {
       fs.writeFile(optionsFilename, optionsRaw, function(err) {
         if (err) {
+          debug(url, 'problem writing options to file', err);
           return reject(new Error('fetch-vcr ERROR while attempting to save fixture file to ' + optionsFilename + '. Maybe the directory does not exist?'))
         }
-        resolve(response)
+        resolve(true)
       })
     })
 
     return Promise.all([contentsPromise, optionsPromise])
-  })
-  .then(function() {
-    return response
+    .then(function() {
+      // send a new buffer because response.clone() does not work well. See https://github.com/bitinn/node-fetch/issues/151
+      return new Response(contentsBuffer, json)
+    })
   })
 }
 
 function fetchVCR(url, args) {
+  const hash = buildHash(url, args)
+  const contentsFilename = path.join(CONFIGURATION.fixturePath, buildContentsFilename(url, args, hash))
+  const optionsFilename = path.join(CONFIGURATION.fixturePath, buildOptionsFilename(url, args, hash))
+
   // Try to load the response from the fixture.
   // Then, if a fixture was not found, either fetch it for reals or error (depending on the VCR_MODE)
   return new Promise(function(resolve, reject) {
@@ -139,23 +156,32 @@ function fetchVCR(url, args) {
       })
 
     } else {
-      loadFixture(url, args)
-      .then(resolve) // Pass the loaded response back
-      .catch(function(err) {
-        if (CONFIGURATION.mode === 'cache') {
-          // Perform the fetch, save the response, and then yield the original response
-          fetchImpl(url, args)
-          .catch(reject)
-          .then(function(response) {
-            saveFixture(url, args, response)
-            .then(function(val) {
-              resolve(val)
-            })
+      debug(url, 'checking for cached version of');
+      // Check if cached version exists
+      fs.access(optionsFilename, fs.constants.R_OK, function(err) {
+        if (err) {
+          // Cached version does not exist
+          if (CONFIGURATION.mode === 'cache') {
+            debug(url, 'cached version not found. making network request');
+            // Perform the fetch, save the response, and then yield the original response
+            fetchImpl(url, args)
             .catch(reject)
-          })
+            .then(function(response) {
+              debug(url, 'saving network request');
+              saveFixture(url, args, response)
+              .then(function(val) {
+                debug(url, 'done saving');
+                resolve(val)
+              })
+              .catch(reject)
+            })
+          } else {
+            // throw new Error('fetch-vcr ERROR: Fixture file was not found.')
+            reject(err) // TODO: Provide a more detailed message
+          }
         } else {
-          // throw new Error('fetch-vcr ERROR: Fixture file was not found.')
-          reject(err) // TODO: Provide a more detailed message
+          loadFixture(url, args)
+          .then(resolve, reject)
         }
       })
     }
