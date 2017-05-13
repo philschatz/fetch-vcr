@@ -156,13 +156,14 @@ function fetchVCR(url, args) {
       })
 
     } else {
-      debug(url, 'checking for cached version of');
+      debug(url, 'checking for cached version');
       // Check if cached version exists
       fs.access(optionsFilename, fs.constants.R_OK, function(err) {
         if (err) {
           // Cached version does not exist
+          debug(url, 'cached version not found');
           if (CONFIGURATION.mode === 'cache') {
-            debug(url, 'cached version not found. making network request');
+            debug(url, 'making network request');
             // Perform the fetch, save the response, and then yield the original response
             fetchImpl(url, args)
             .catch(reject)
@@ -176,10 +177,12 @@ function fetchVCR(url, args) {
               .catch(reject)
             })
           } else {
+            debug(url, 'NOT making network request because VCR_MODE=' + CONFIGURATION.mode);
             // throw new Error('fetch-vcr ERROR: Fixture file was not found.')
             reject(err) // TODO: Provide a more detailed message
           }
         } else {
+          debug(url, 'using cached version');
           loadFixture(url, args)
           .then(resolve, reject)
         }
