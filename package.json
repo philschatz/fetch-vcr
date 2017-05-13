@@ -4,6 +4,7 @@
   "description": "Stop mocking HTTP Requests and just record and then play them back",
   "main": "index.js",
   "scripts": {
+    "pretest": "[[ ! $(find ./test/_fixtures/ -name 'https:__openstax.org*' ) ]] || rm ./test/_fixtures/https:__openstax.org*",
     "test": "ava"
   },
   "dependencies": {

@@ -14,40 +14,64 @@ const VCR_MODE = process.env['VCR_MODE'] || 'playback'
 
 // mode: 'playback' or 'cache' or 'record'
 // fixturePath: __dirname + '/_fixtures/'
-const CONFIGURATION = {mode: VCR_MODE, fixturePath: path.join(process.cwd(), '_fixtures')}
+const CONFIGURATION = {
+  mode: VCR_MODE,
+  fixturePath: path.join(process.cwd(), '_fixtures'),
+  headerBlacklist: ['authorization'] // These need to be lowercase
+}
 
 buildHash = function(url, args) {
   const hash = crypto.createHash('sha256')
-  hash.update(JSON.stringify(args))
+  const json = {}
+  if (args) {
+    json.method = args.method
+    json.redirect = args.redirect
+
+    // Filter out all the headers in the headerBlacklist
+    if (args.headers) {
+      json.headers = {}
+      const headerKeys = Object.keys(args.headers)
+      for(const index in headerKeys) {
+        const key = headerKeys[index]
+        if (CONFIGURATION.headerBlacklist.indexOf(key.toLowerCase()) < 0) {
+          json.headers[key] = args.headers[key]
+        }
+      }
+    }
+  }
+  hash.update(JSON.stringify(json))
   return hash.digest('hex')
 }
 
-buildFilenamePrefix = function(url, args) {
+buildFilenamePrefix = function(url, args, hash) {
   args = args || {method: 'GET'}
   url = url.replace(/\//g, '_')
   const method = args.method.toUpperCase()
-  return url + '_' + method + '_' + buildHash(url, args)
+  return url + '_' + method + '_' + hash
 }
 
-buildOptionsFilename = function(url, args) {
-  return buildFilenamePrefix(url, args) + '_options.json'
+buildOptionsFilename = function(url, args, hash) {
+  return buildFilenamePrefix(url, args, hash) + '_options.json'
 }
 
-buildContentsFilename = function(url, args) {
-  return buildFilenamePrefix(url, args) + '_body.raw'
+buildContentsFilename = function(url, args, hash) {
+  return buildFilenamePrefix(url, args, hash) + '_body.raw'
 }
 
 function loadFixture(url, args) {
+  const hash = buildHash(url, args)
+  const contentsFilename = path.join(CONFIGURATION.fixturePath, buildContentsFilename(url, args, hash))
+  const optionsFilename = path.join(CONFIGURATION.fixturePath, buildOptionsFilename(url, args, hash))
   return new Promise(function(resolve, reject) {
     // Read the Response options
-    fs.readFile(path.join(CONFIGURATION.fixturePath, buildOptionsFilename(url, args)), function(err, optionsRaw) {
+    fs.readFile(optionsFilename, function(err, optionsRaw) {
       if (err) {
         return reject(err)
       }
       const opts = JSON.parse(optionsRaw)
 
       // Read the Response contens
-      fs.readFile(path.join(CONFIGURATION.fixturePath, buildContentsFilename(url, args)), function(err, contentsBuffer) {
+      fs.readFile(contentsFilename, function(err, contentsBuffer) {
         if (err) {
           return reject(err)
         }
@@ -58,8 +82,9 @@ function loadFixture(url, args) {
 }
 
 function saveFixture(url, args, response) {
-  const contentsFilename = path.join(CONFIGURATION.fixturePath, buildContentsFilename(url, args))
-  const optionsFilename = path.join(CONFIGURATION.fixturePath, buildOptionsFilename(url, args))
+  const hash = buildHash(url, args)
+  const contentsFilename = path.join(CONFIGURATION.fixturePath, buildContentsFilename(url, args, hash))
+  const optionsFilename = path.join(CONFIGURATION.fixturePath, buildOptionsFilename(url, args, hash))
 
   // Convert the response body to a Buffer for saving
   return response.clone().buffer()
@@ -140,6 +165,12 @@ function fetchVCR(url, args) {
 fetchVCR.configure = function(config) {
   CONFIGURATION.mode = config.mode || VCR_MODE
   CONFIGURATION.fixturePath = config.fixturePath || CONFIGURATION.fixturePath
+  if (config.headerBlacklist) {
+    CONFIGURATION.headerBlacklist = []
+    config.headerBlacklist.forEach(function(key) {
+      CONFIGURATION.headerBlacklist.push(key.toLowerCase())
+    })
+  }
 }
 
 module.exports = fetchVCR

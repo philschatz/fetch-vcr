@@ -1,5 +1,4 @@
-/node_modules/
+node_modules/
 
-test/_fixtures/https:__openstax.org_GET_aa7bd31f5b3b80e6f50870686d3bef6bc1bc1be0501e361e9735ffa246a1cb40_body.raw
-
-test/_fixtures/https:__openstax.org_GET_aa7bd31f5b3b80e6f50870686d3bef6bc1bc1be0501e361e9735ffa246a1cb40_options.json
+test/_fixtures/https:__openstax.org_GET_*_body.raw
+test/_fixtures/https:__openstax.org_GET_*_options.json
