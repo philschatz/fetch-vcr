@@ -1,6 +1,6 @@
 # fetch-vcr
 
-Stop mocking HTTP Requests and just record and then play them back. See [vcr/vcr](https://github.com/vcr/vcr) for the main idea.
+Stop mocking HTTP Requests. Just record and then play them back. See [vcr/vcr](https://github.com/vcr/vcr) for the main idea.
 
 # Usage
 
@@ -50,3 +50,10 @@ You can set the mode either by:
 
 - setting the `VCR_MODE=record` environment variable
 - explicitly running `fetch.configure({mode: 'record'})`
+
+
+# How can I use this in a browser?
+
+Currently you can record HTTP requests in NodeJS and play them back in the browser.
+
+To play them back in a browser, just run `fetchVCR.configure({fixturePath: './path/to/_fixtures'})` and `fetchVCR` will use that path to load the files via AJAX requests.

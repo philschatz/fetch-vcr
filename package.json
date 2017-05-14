@@ -1,17 +1,23 @@
 {
   "version": "0.3.1",
   "name": "fetch-vcr",
-  "description": "Stop mocking HTTP Requests and just record and then play them back",
-  "main": "index.js",
+  "description": "Stop mocking HTTP Requests. Just record and then play them back",
+  "main": "./lib/index.js",
   "scripts": {
     "pretest": "[[ ! $(find ./test/_fixtures/ -name 'https:__openstax.org*' ) ]] || rm ./test/_fixtures/https:__openstax.org*",
-    "test": "ava"
+    "test": "ava",
+    "debug": "DEBUG=true node --inspect --debug-brk ./node_modules/ava/profile.js ./test/index.js",
+    "build-browser": "rollup --config rollup.config.js"
   },
   "dependencies": {
-    "node-fetch": "^1.6.3"
+    "node-fetch": "^1.6.3",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "ava": "^0.19.1",
+    "rollup": "^0.41.6",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "standard": "^10.0.2"
   },
   "directories": {
@@ -23,8 +29,15 @@
   },
   "keywords": [
     "fetch",
+    "fixture",
+    "cassette",
     "vcr"
   ],
+  "browser": {
+    "./lib/adapter/fetch-node.js": "./lib/adapter/fetch-browser.js",
+    "./lib/adapter/files-node.js": "./lib/adapter/files-browser.js",
+    "./lib/adapter/response-node.js": "./lib/adapter/response-browser.js"
+  },
   "author": "Philip Schatz",
   "license": "MIT",
   "bugs": {

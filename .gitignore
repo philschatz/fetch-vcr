@@ -1,4 +1,7 @@
-node_modules/
+/node_modules/
 
-test/_fixtures/https:__openstax.org_GET_*_body.raw
-test/_fixtures/https:__openstax.org_GET_*_options.json
+/test/_fixtures/https:__openstax.org_GET_*_body.raw
+/test/_fixtures/https:__openstax.org_GET_*_options.json
+
+/browser-bundle.js
+/browser-bundle.js.map

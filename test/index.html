@@ -1,0 +1,18 @@
+<html>
+<body>
+  <script src="../browser-bundle.js"></script>
+  <script>
+    fetchVCR.configure({fixturePath: './_fixtures'})
+
+    fetchVCR('https://cnx.org').then(function(response) {
+      response.text().then(function(text) {
+        document.getElementById('output').innerHTML = text.replace(/</g, '&lt;')
+      })
+    })
+  </script>
+  <h1>Output from fetchVCR('https://cnx.org')</h1>
+  <hr/>
+  <pre id="output">(not fetched yet)</pre>
+  <hr/>
+</body>
+</html>

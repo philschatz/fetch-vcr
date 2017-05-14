@@ -1,6 +1,6 @@
 import test from 'ava'
 import assert from 'assert'
-import fetchVCR from '..'
+import fetchVCR from '../lib/index'
 
 test.before(t => {
   fetchVCR.configure({
