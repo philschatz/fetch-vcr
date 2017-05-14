@@ -18,6 +18,15 @@ test('fetches from the fixture', t => {
   })
 })
 
+test('caches a 404 page', t => {
+  fetchVCR.configure({mode: 'record'})
+  return fetchVCR('https://google.com/404')
+  .then(response => {
+    return response.text()
+    .then(text => t.pass())
+  })
+})
+
 test('caches the fixture', async t => {
   const TEST_URL = 'https://openstax.org'
   // Verify that the fixture does not yet exist
