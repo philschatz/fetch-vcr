@@ -4,7 +4,7 @@
   "description": "Stop mocking HTTP Requests. Just record and then play them back",
   "main": "./lib/index.js",
   "scripts": {
-    "pretest": "[[ ! $(find ./test/_fixtures/ -name 'https:__openstax.org*' ) ]] || rm ./test/_fixtures/https:__openstax.org*",
+    "pretest": "[[ ! $(find ./test/_fixtures/ -name 'https%3A__openstax.org*' ) ]] || rm ./test/_fixtures/https%3A__openstax.org*",
     "test": "ava",
     "debug": "DEBUG=true node --inspect --debug-brk ./node_modules/ava/profile.js ./test/index.js",
     "build-browser": "rollup --config rollup.config.js"

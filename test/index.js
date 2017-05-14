@@ -11,7 +11,7 @@ test.before(t => {
 
 test('fetches from the fixture', t => {
   // fetchVCR.configure({mode: 'record'})
-  return fetchVCR('https://cnx.org')
+  return fetchVCR('https://cnx.org?') // the `?` is to make sure the fixture filename is escaped properly
   .then(response => {
     return response.text()
     .then(text => t.pass())
