@@ -28,7 +28,7 @@ test('caches a 404 page', t => {
 })
 
 test('saves JSON properly', t => {
-  fetchVCR.configure({mode: 'record'})
+  // fetchVCR.configure({mode: 'record'})
   return fetchVCR('https://api.github.com/search/repositories?q=octokat')
   .then(response => {
     return response.json()
