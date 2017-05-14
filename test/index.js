@@ -29,7 +29,16 @@ test('caches a 404 page', t => {
 
 test('saves JSON properly', t => {
   // fetchVCR.configure({mode: 'record'})
-  return fetchVCR('https://api.github.com/search/repositories?q=octokat')
+  // return fetchVCR('https://api.github.com/search/repositories?q=octokat')
+  return fetchVCR('https://archive.cnx.org/contents/9a1df55a-b167-4736-b5ad-15d996704270%403.2.json')
+  .then(response => {
+    return response.json()
+    .then(text => t.pass())
+  })
+})
+
+test('can recover from invalid JSON', t => {
+  return fetchVCR('https://example.com/invalid-because-of-extra.json')
   .then(response => {
     return response.json()
     .then(text => t.pass())
