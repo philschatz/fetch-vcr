@@ -1,0 +1,18 @@
+<html>
+<body>
+  <!-- <script src="../browser-bundle.js"></script> -->
+  <script>
+    fetch('https://cnx.org?').then(function(response) {
+      response.text().then(function(text) {
+        console.debug('Fetched the text!')
+        console.debug(text.substring(0, 50) + '...')
+        document.getElementById('output').innerHTML = text.replace(/</g, '&lt;')
+      })
+    })
+  </script>
+  <h1>Output from fetch('https://cnx.org')</h1>
+  <hr/>
+  <pre id="output">(not fetched yet)</pre>
+  <hr/>
+</body>
+</html>

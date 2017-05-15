@@ -71,6 +71,31 @@ In order to save the fixture files to disk you will need to override `fetchVCR.s
 
 If you are using PhantomJS then you will likely need to use the `alert(msg)` to get data out of PhantomJS and then save it to the filesystem (using `fs.writeFile(...)`)
 
+## Using jsdom (like Jest)
+
+Jest runs using jsdom which makes it really easy to add fetchVCR. Basically, just replace the global `fetch` function with `fetchVCR` and you can record/play back the cassettes. See below for an example:
+
+```js
+var fs = require('fs')
+var jsdom = require('jsdom')
+var fetchVCR = require('fetch-vcr')
+var JSDOM = jsdom.JSDOM
+
+// Configure the fetchVCR to record
+fetchVCR.configure({
+  fixturePath: './_fixtures/',
+  mode: 'cache'
+})
+
+var dom = new JSDOM(fs.readFileSync('./jsdom-example.html'), {
+  runScripts: 'dangerously',
+  beforeParse: (window) => {
+    window.fetch = fetchVCR
+  }
+})
+```
+
+
 
 [kanban-image]: https://img.shields.io/github/issues/philschatz/fetch-vcr.svg?label=kanban%20board%20%28gh-board%29
 [kanban-url]: http://philschatz.com/gh-board/#/r/philschatz:fetch-vcr

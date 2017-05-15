@@ -10,6 +10,7 @@
     "build-browser": "rollup --config rollup.config.js"
   },
   "dependencies": {
+    "jsdom": "^10.1.0",
     "node-fetch": "^1.6.3",
     "whatwg-fetch": "^2.0.3"
   },

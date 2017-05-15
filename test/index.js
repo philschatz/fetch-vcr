@@ -68,3 +68,23 @@ test('caches the fixture', async t => {
   assert.equal(originalText, newText)
   t.pass()
 })
+
+test.cb('runs in jsdom', t => {
+  const fs = require('fs')
+  const jsdom = require('jsdom')
+  const JSDOM = jsdom.JSDOM
+
+  const virtualConsole = new jsdom.VirtualConsole()
+  virtualConsole.on('debug', () => {
+    t.end()
+  })
+
+  const dom = new JSDOM(fs.readFileSync(__dirname + '/jsdom-example.html'), {
+    virtualConsole: virtualConsole,
+    runScripts: 'dangerously',
+    beforeParse: (window) => {
+      window.fetch = fetchVCR
+    }
+  })
+
+})
