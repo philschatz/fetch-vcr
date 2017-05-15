@@ -1,5 +1,12 @@
 # fetch-vcr
 
+[![gh-board][kanban-image]][kanban-url]
+[![NPM version][npm-image]][npm-url]
+[![Downloads][downloads-image]][downloads-url]
+[![build status][travis-image]][travis-url]
+[![dependency status][dependency-image]][dependency-url]
+[![dev dependency status][dev-dependency-image]][dev-dependency-url]
+
 Stop mocking HTTP Requests. Just record and then play them back. See [vcr/vcr](https://github.com/vcr/vcr) for the main idea.
 
 # Usage
@@ -63,3 +70,19 @@ To record HTTP requests in a browser you will need to do a little bit of work. L
 In order to save the fixture files to disk you will need to override `fetchVCR.saveFile(rootPath, filename, contents) => Promise`.
 
 If you are using PhantomJS then you will likely need to use the `alert(msg)` to get data out of PhantomJS and then save it to the filesystem (using `fs.writeFile(...)`)
+
+
+[kanban-image]: https://img.shields.io/github/issues/philschatz/fetch-vcr.svg?label=kanban%20board%20%28gh-board%29
+[kanban-url]: http://philschatz.com/gh-board/#/r/philschatz:fetch-vcr
+[npm-image]: https://img.shields.io/npm/v/fetch-vcr.svg
+[npm-url]: https://npmjs.org/package/fetch-vcr
+[downloads-image]: http://img.shields.io/npm/dm/fetch-vcr.svg
+[downloads-url]: https://npmjs.org/package/fetch-vcr
+[travis-image]: https://img.shields.io/travis/philschatz/fetch-vcr.svg
+[travis-url]: https://travis-ci.org/philschatz/fetch-vcr
+[dependency-image]: https://img.shields.io/david/philschatz/fetch-vcr.svg
+[dependency-url]: https://david-dm.org/philschatz/fetch-vcr
+[dev-dependency-image]: https://img.shields.io/david/dev/philschatz/fetch-vcr.svg
+[dev-dependency-url]: https://david-dm.org/philschatz/fetch-vcr#info=devDependencies
+[coverage-image]: https://img.shields.io/codecov/c/github/philschatz/fetch-vcr.svg
+[coverage-url]: https://codecov.io/gh/philschatz/fetch-vcr
