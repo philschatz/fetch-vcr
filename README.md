@@ -1,5 +1,7 @@
 # fetch-vcr
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/philschatz/fetch-vcr.svg)](https://greenkeeper.io/)
+
 Stop mocking HTTP Requests. Just record and then play them back. See [vcr/vcr](https://github.com/vcr/vcr) for the main idea.
 
 # Usage
