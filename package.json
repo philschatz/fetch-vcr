@@ -1,5 +1,5 @@
 {
-  "version": "0.5.2",
+  "version": "0.5.3",
   "name": "fetch-vcr",
   "description": "Stop mocking HTTP Requests. Just record and then play them back",
   "main": "./lib/index.js",
