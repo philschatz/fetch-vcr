@@ -57,3 +57,9 @@ You can set the mode either by:
 Currently you can record HTTP requests in NodeJS and play them back in the browser.
 
 To play them back in a browser, just run `fetchVCR.configure({fixturePath: './path/to/_fixtures'})` and `fetchVCR` will use that path to load the files via AJAX requests.
+
+To record HTTP requests in a browser you will need to do a little bit of work. Loading fixture files is relatively painless (using `XMLHTTPRequest`) but saving them to disk is non-trivial.
+
+In order to save the fixture files to disk you will need to override `fetchVCR.saveFile(rootPath, filename, contents) => Promise`.
+
+If you are using PhantomJS then you will likely need to use the `alert(msg)` to get data out of PhantomJS and then save it to the filesystem (using `fs.writeFile(...)`)
