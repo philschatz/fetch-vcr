@@ -10,12 +10,12 @@
     "build-browser": "rollup --config rollup.config.js"
   },
   "dependencies": {
-    "jsdom": "^11.0.0",
     "node-fetch": "^1.6.3",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "ava": "^0.19.1",
+    "jsdom": "^11.0.0",
     "rollup": "^0.41.6",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
