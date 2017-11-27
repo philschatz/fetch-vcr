@@ -14,7 +14,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
+    "ava": "^0.24.0",
     "jsdom": "^11.0.0",
     "rollup": "^0.47.1",
     "rollup-plugin-commonjs": "^8.0.2",
