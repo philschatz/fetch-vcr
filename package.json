@@ -19,7 +19,7 @@
     "rollup": "^0.50.1",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "standard": "^10.0.2"
+    "standard": "^11.0.0"
   },
   "directories": {
     "test": "test"
