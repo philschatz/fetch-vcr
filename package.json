@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.1.2",
   "name": "fetch-vcr",
   "description": "Stop mocking HTTP Requests. Just record and then play them back",
   "main": "./lib/index.js",
@@ -10,16 +10,16 @@
     "build-browser": "rollup --config rollup.config.js"
   },
   "dependencies": {
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^2.0.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "ava": "^0.24.0",
+    "ava": "^0.25.0",
     "jsdom": "^11.0.0",
     "rollup": "^0.54.1",
-    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-commonjs": "^9.0.0",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "standard": "^10.0.2"
+    "standard": "^11.0.0"
   },
   "directories": {
     "test": "test"
