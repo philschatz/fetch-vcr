@@ -69,7 +69,8 @@ Just add the following to `package.json`:
 ```
   "jest": {
     "moduleNameMapper": {
-      "fetch": "fetch-vcr"
+      "hack-node-fetch": "node-fetch",
+      "node-fetch": "fetch-vcr"
     }
   }
 ```

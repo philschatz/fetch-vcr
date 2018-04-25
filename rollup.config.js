@@ -3,7 +3,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 
 export default {
-  entry: './lib/index.js',
+  input: './lib/index.js',
   plugins: [
     resolve({
       // jsnext: true,
@@ -11,12 +11,12 @@ export default {
     }),
     commonjs()
   ],
-  targets: [
+  output: [
     {
-      dest: './browser-bundle.js',
+      file: './browser-bundle.js',
       format: 'umd',
-      moduleName: 'fetchVCR',
-      sourceMap: true
+      name: 'fetchVCR',
+      sourcemap: true
     }
   ]
 }
