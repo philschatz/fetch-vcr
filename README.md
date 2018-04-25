@@ -75,6 +75,16 @@ Just add the following to `package.json`:
   }
 ```
 
+If you want to check which calls were made, you can use the following:
+
+```js
+// Returns an array of {url, args, hash, bodyFilename, response, optionsFilename}
+const allCalls = fetchVCR.getCalled()
+
+// Clears the array of calls made
+fetchVCR.clearCalled()
+```
+
 ## jsdom Setup
 
 Many apps use `jsdom` for testing which makes it really easy to add `fetch-vcr`. Just replace the global `fetch` function with `fetchVCR` and you can record/play back the cassettes. See below for an example:
