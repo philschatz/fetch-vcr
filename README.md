@@ -62,6 +62,28 @@ fetch('http://openstax.org')
 })
 ```
 
+## How do I ignore calls?
+
+Here is how you would configure it to ignore certain request:
+
+```js
+// import fetch from 'fetch';
+import fetch from 'fetch-vcr';
+
+// Configure where the recordings should be loaded/saved to.
+// The path is relative to `process.cwd()` but can be absolute.
+fetch.configure({
+  fixturePath: './_fixtures',
+  ignoreUrls: [/.+weedmaps\.com.+/] // <-- This is an array of Regular Expressions
+  // mode: 'record'     <-- This is optional
+})
+
+fetch('https://weedmaps.com/sitemap') // <-- This will be ignored from vcr
+.then(response => {
+  console.log(response)
+})
+```
+
 ## Jest Setup
 
 Just add the following to `package.json`:
