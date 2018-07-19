@@ -5,7 +5,16 @@ import fetchVCR from '../lib/index'
 test.before(t => {
   fetchVCR.configure({
     mode: 'playback',
-    fixturePath: __dirname + '/_fixtures'
+    fixturePath: __dirname + '/_fixtures',
+    ignoreUrls: [/.+ignore=true($|.+)/i]
+  })
+})
+
+test('ignores urls in ignoreUrls', t => {
+  return fetchVCR('https://test.com?ignore=true')
+  .then(response => {
+    return response.text()
+    .then(text => t.pass())
   })
 })
 
