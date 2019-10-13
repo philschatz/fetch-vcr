@@ -3,6 +3,7 @@
   "name": "fetch-vcr",
   "description": "Stop mocking HTTP Requests. Just record and then play them back",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "pretest": "./script/clean-for-test",
     "test": "ava",
