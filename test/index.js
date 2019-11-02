@@ -1,6 +1,7 @@
 import test from 'ava'
 import assert from 'assert'
 import fetchVCR from '../lib/index'
+import fs from 'fs'
 
 function createLongParams (num) {
   return 'abcdefghijklmnopqrstuvwxyz'.split('').map(letter => `${letter}=${num}`).join('&')
@@ -79,6 +80,28 @@ test('caches fixture with long name', async t => {
   const newText = await newResp.text()
 
   assert.equal(originalText, newText)
+  t.pass()
+})
+
+test('sets custom fixtureName', async t => {
+  const TEST_URL = `https://jsonplaceholder.typicode.com/users`
+  const fixtureDir = __dirname + '/_fixtures'
+
+  fetchVCR.configure({ fixtureName: '[url]', mode: 'record' })
+  await fetchVCR(TEST_URL)
+
+  assert(fs.existsSync(fixtureDir + '/https%3A__jsonplaceholder.typicode.com_users_body.raw'))
+  
+  fetchVCR.configure({ fixtureName: '[url]_[method]', mode: 'record' })
+  await fetchVCR(TEST_URL)
+
+  assert(fs.existsSync(fixtureDir + '/https%3A__jsonplaceholder.typicode.com_users_GET_body.raw'))
+  
+  fetchVCR.configure({ fixtureName: '[url]_[hash]', mode: 'record' })
+  await fetchVCR(TEST_URL)
+  
+  assert(fs.existsSync(fixtureDir + '/https%3A__jsonplaceholder.typicode.com_users_3938_body.raw'))
+
   t.pass()
 })
 

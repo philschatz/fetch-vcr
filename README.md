@@ -84,6 +84,19 @@ fetch('https://weedmaps.com/sitemap') // <-- This will be ignored from vcr
 })
 ```
 
+## How do I define custom fixture filenames?
+
+There are 3 find/replace variables exposed `[url]`, `[method]`, and `[hash]`.
+
+```js
+// import fetch from 'fetch';
+import fetch from 'fetch-vcr';
+
+fetch.configure({
+  fixtureName: '[url]_[method]_[hash]', // <-- This is the default value
+})
+```
+
 ## Jest Setup
 
 Just add the following to `package.json`:
