@@ -84,6 +84,20 @@ fetch('https://weedmaps.com/sitemap') // <-- This will be ignored from vcr
 })
 ```
 
+## How can I tell if the response was from the cache?
+
+You can check `response.wasCached`. It will be `true` if the response was loaded from the cache.
+
+```js
+import fetch from 'fetch-vcr';
+
+fetch('https://philschatz.com').then(response => {
+  if (!response.wasCached) {
+    sleep(1000) // wait before making another request
+  }
+})
+```
+
 ## Jest Setup
 
 Just add the following to `package.json`:
