@@ -1,4 +1,5 @@
 import test from 'ava'
+import nodefetch from 'node-fetch'
 import assert from 'assert'
 import fetchVCR from '../lib/index'
 
@@ -99,4 +100,12 @@ test.cb('runs in jsdom', t => {
       window.fetch = fetchVCR
     }
   })
+})
+
+test('can use node-fetch.Request', t => {
+  return fetchVCR(new nodefetch.Request('https://archive.cnx.org/contents/9a1df55a-b167-4736-b5ad-15d996704270%403.2.json'))
+    .then(response => {
+      return response.json()
+        .then(text => t.pass())
+    })
 })
